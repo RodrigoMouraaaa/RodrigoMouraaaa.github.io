@@ -25,6 +25,11 @@
             text-center;
         }
 
+        header::before {
+            content: "";
+            @apply absolute inset-0 bg-black/20;
+        }
+
         header h1 {
             @apply text-7xl md:text-8xl
             text-white font-bold
@@ -37,6 +42,9 @@
             text-white;
         }
         
+        header h1,
+        header h2 { @apply text-shadow-lg/30; }
+
         .slide-in-top {
 	        animation: slide-in-top 1.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
         }
