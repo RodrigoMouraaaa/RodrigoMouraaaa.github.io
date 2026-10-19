@@ -1,61 +1,216 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <meta name="google-site-verification" content="DPV2AYop92ciQ7-h1ur7ME0BAqJh2L4cmNj7G_zN9Nw" />
-    <title>Welcome to my web page!</title>
+
+    <meta name="google-site-verification" content="DPV2AYop92ciQ7-h1ur7ME0BAqJh2L4cmNj7G_zN9Nw">
+
+    <title>Rodrigo Moura | Web/UI Designer</title>
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="exercises/assets/img/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="exercises/assets/img/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="exercises/assets/img/favicons/favicon-16x16.png">
     <link rel="manifest" href="exercises/assets/img/favicons/">
 
+    <!-- Website Styles -->
     <style type="text/tailwindcss">
-    header {
-    @apply pt-8 px-[9%] pb-[42px] md:py-[3%] md:px-[20%];
-}
 
-    section {   
-    @apply pt-8 px-[9%] pb-[42px] md:py-[3%] md:px-[20%];
-}
+        body {
+            @apply text-center bg-white text-black;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            width: 90%;
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 45px 35px;
+            background-color: white;
+        }
+
+        header {
+            @apply text-center;
+        }
+
+        header h1 {
+            @apply font-normal;
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        header h2 {
+            @apply font-normal not-italic;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        header img {
+            width: 350px;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 35px;
+        }
+
+        section {
+            @apply text-center;
+        }
+
+        section h2 {
+            @apply font-bold uppercase;
+            font-size: 21px;
+            margin-top: 35px;
+            margin-bottom: 25px;
+        }
+
+        section p {
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        section a {
+            color: purple;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+        }
+
+        section a:hover {
+            color: #5b21b6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+
+            main {
+                width: 94%;
+                margin: 20px auto;
+                padding: 30px 18px;
+            }
+
+            header h1 {
+                font-size: 36px;
+            }
+
+            header h2 {
+                font-size: 22px;
+            }
+
+            header img {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            section h2 {
+                font-size: 19px;
+            }
+
+            section p {
+                font-size: 16px;
+            }
+        }
+
     </style>
 
-</head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1DLERDDLZR"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1DLERDDLZR"></script>
 
-    gtag('config', 'G-1DLERDDLZR');
-</script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-1DLERDDLZR');
+    </script>
+
+</head>
 
 <body>
-    <!--This is a comment!-->
-    <header>
-        <h1>Rodrigo Moura</h1>
-        <h2>Web/UI Designer</h2>
-        <img src="exercises/assets/img/pexels-alicia-christin-gerald-1447380217-37880001.jpg" alt="">
-    </header>
+
     <main>
+
+        <!-- Website Header -->
+        <header>
+
+            <h1>Rodrigo Moura</h1>
+
+            <h2>Web / UI Designer</h2>
+
+            <img
+                src="exercises/assets/img/dddd.jpg"
+                alt="Web design workspace"
+            >
+
+        </header>
+
+        <!-- Main Content -->
         <section>
-            <p>Welcome to my personal webpage.Here you can find informartioon about my interests, projects, and contact
-                details.
+
+            <p>
+                Welcome to my personal webpage.
+                Here you can find information about my
+                interests, projects, and contact details.
             </p>
 
-            <h2>Projects</h2>
-            <p><a href="exercises/laptops.html">Laptops Websites</a></p>
-            <p><a href="exercises/page-1.html">A Tale of Two Cities Website</a></p>
-            <p><a href="exercises/page-2.html">Purple Rain</a></p>
-            <p><a href="exercises/page-3.html">Web Page with Sections</a></p>
-            <p><a href="exercises/page-4.html">Vincent Van Gogh</a></p>
-            <p><a href="exercises/page-5.html">Ireland's Top Five Visitor Attractions</a></p>
+            <h2>Sample Web Pages</h2>
+
+            <!-- Project Links -->
+
+            <p>
+                <a href="exercises/laptops.html">
+                    Laptops Websites
+                </a>
+            </p>
+
+            <p>
+                <a href="exercises/page-1.html">
+                    A Tale of Two Cities Website
+                </a>
+            </p>
+
+            <p>
+                <a href="exercises/page-2.html">
+                    Purple Rain
+                </a>
+            </p>
+
+            <p>
+                <a href="exercises/page-3.html">
+                    Web Page with Sections
+                </a>
+            </p>
+
+            <p>
+                <a href="exercises/page-4.html">
+                    Vincent Van Gogh
+                </a>
+            </p>
+
+            <p>
+                <a href="exercises/page-5.html">
+                    Ireland's Top Five Visitor Attractions
+                </a>
+            </p>
+
+            <p>
+                <a href="exercises/hero-image.html">
+                    Hero block with background image
+                </a>
+            </p>
+
         </section>
+
     </main>
 
 </body>
