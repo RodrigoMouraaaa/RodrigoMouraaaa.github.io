@@ -2,29 +2,22 @@
 <html lang="en">
 
 <head>
+    <!-- Rodrigo Moura 81200 -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Purple Rain</title>
+  <meta name="description" content="An HTML and typography exercise about Purple Rain by Prince and The Revolution.">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
-
-    header h1 {
-        @apply px-[9%] text-6xl md:px-[20%] md:text-8xl font-serif text-center tracking-tighter;
-    }
-
-    section {
-        @apply pt-8 px-[9%] pb-[42px] md:py-[3%] md:px-[20%] font-serif;
-    }
-
-    section h2 {
-        @apply mt-8 text-3xl md:text-4xl font-serif font-bold tracking-tighter uppercase ;
-    }
-
-  
-    section p {
-        @apply mb-4 text-base md:text-lg leading-9;
-    }
-
+        body { @apply bg-purple-50 text-purple-950 font-serif; }
+        header { @apply bg-purple-900 text-white px-[9%] py-10 md:px-[20%] md:py-14; }
+        header h1 { @apply text-5xl md:text-7xl font-bold text-center tracking-tight leading-tight; }
+        section { @apply px-[9%] py-8 md:px-[20%] md:py-12; }
+        section h2 { @apply mt-8 mb-4 text-2xl md:text-3xl font-bold tracking-tight uppercase; }
+        section p { @apply mb-5 text-base md:text-lg leading-8; }
+        blockquote { @apply my-6 border-l-4 border-purple-700 pl-5 italic; }
+        em { @apply italic; }
+        a { @apply text-purple-800 underline underline-offset-4 hover:text-purple-950 focus-visible:outline-2 focus-visible:outline-offset-4; }
     </style>
 </head>
 
@@ -33,13 +26,15 @@
     <header>
       <h1>Purple Rain</h1>
     </header>
-    
+
     <main>
       <section>
+        <h2>Introduction</h2>
         <p><em>Purple Rain</em> is a song by American musician Prince and his backing band, The Revolution. It is the
           title track from the 1984 album of the same name, which is also the soundtrack album for the 1984 film of the
           same name.</p>
 
+        <h2>Origins</h2>
         <p>Originally written as a country song and intended to be a collaboration with Stevie Nicks, Prince explained
           the
           meaning of the song as follows:</p>
@@ -49,11 +44,13 @@
             being with the one you love and letting your faith or God guide you through the purple rain.”</p>
         </blockquote>
 
+        <h2>Recording</h2>
         <p>The song was recorded during a benefit concert for the Minnesota Dance Theatre at the First Avenue nightclub
           in
           Minneapolis on August 3, 1983. <em>City Pages</em> described the 70-minute performance as Prince's “sweatiest
           and most soulful hometown concert yet.”</p>
 
+        <h2>Recognition</h2>
         <p>The song ranked number 144 on <em>Rolling Stone</em>'s list of the 500 Greatest Songs of All Time. <em>Q</em>
           magazine placed it at number 40 on its list of the 100 Greatest Guitar Tracks, and Pitchfork named it the best
           song of the 1980s. The song is also included in the Rock &amp; Roll Hall of Fame's 500 Songs that Shaped Rock

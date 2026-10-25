@@ -2,38 +2,24 @@
 <html lang="en">
 
 <head>
+    <!-- Rodrigo Moura 81200 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Tale of Two Cities</title>
     <meta name="description"
-        content="Freelance Web and Digital Developer crafting innovative online experiences on the web and social media.">
+        content="Extracts from A Tale of Two Cities by Charles Dickens, presented as an HTML and TailwindCSS exercise.">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <style type="text/tailwindcss">
-
-        header h1 {
-            @apply px-[9%] text-6xl md:px-[20%] md:text-8xl font-serif text-center tracking-tighter;
-        }
-
-        section {
-            @apply pt-8 px-[9%] pb-[42px] md:py-[3%] md:px-[20%];
-        }
-
-        section h2 {
-            @apply mt-8 text-3xl md:text-4xl font-serif font-bold tracking-tighter;
-        }
-
-        section h3 {
-            @apply mt-6 text-2xl md:text-3xl font-serif font-bold;
-        }
-
-        section p {
-            @apply mb-4 text-base md:text-lg leading-8;
-        }
-
+        body { @apply bg-slate-50 text-slate-900 font-serif; }
+        header { @apply bg-slate-900 text-white px-[9%] py-10 md:px-[20%] md:py-14; }
+        header h1 { @apply text-4xl md:text-6xl font-bold text-center tracking-tight leading-tight; }
+        section { @apply px-[9%] py-8 md:px-[20%] md:py-12; }
+        section h2 { @apply mt-8 mb-4 text-2xl md:text-3xl font-bold tracking-tight uppercase; }
+        section p { @apply mb-5 text-base md:text-lg leading-8; }
+        i { @apply italic; }
+        a { @apply text-purple-800 underline underline-offset-4 hover:text-purple-950 focus-visible:outline-2 focus-visible:outline-offset-4; }
     </style>
-</head>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1DLERDDLZR"></script>
 <script>
@@ -43,6 +29,7 @@
 
     gtag('config', 'G-1DLERDDLZR');
 </script>
+</head>
 
 <body>
     <header>
@@ -66,7 +53,6 @@
                 authorities
                 insisted on its being received, for good or for evil, in the superlative degree of comparison only.</p>
 
-       
             <h2>First Heading</h2>
             <p>There were a king with a large jaw and a queen with a plain face, on the throne of England; there were a
                 king
@@ -75,7 +61,7 @@
                 crystal
                 to
                 the lords of the State preserves of loaves and fishes, that things in general were settled for ever.</p>
-      
+
             <h2>Second Heading</h2>
             <p>All these things, and a thousand like them, came to pass in and close upon the dear old year one thousand
                 seven
@@ -86,7 +72,7 @@
                 their
                 divine
                 rights with a high hand.</p>
-      
+
             <h2>Third Heading</h2>
             <p>A wonderful fact to reflect upon, that every human creature is constituted to be that profound secret and
                 mystery
@@ -101,7 +87,7 @@
                 it!</p>
 
             <p>by <i>Charles Dickens</i>, published by Chapman and Hall in 1859.</p>
-            <br/>
+
             <p>Return to <a href="../index.html">Home</a></p>
         </section>
     </main>

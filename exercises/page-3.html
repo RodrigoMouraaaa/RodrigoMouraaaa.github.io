@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <!-- Rodrigo Moura 81200 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Page with Sections</title>
@@ -9,28 +10,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <style type="text/tailwindcss">
-        body { @apply font-serif; }
-
-         header h1 {
-        @apply px-[9%] text-6xl md:px-[20%] md:text-8xl font-serif font-bold text-center;
+        /* Custom colour tokens generate Tailwind colour utilities. */
+        @theme {
+            --color-ink: #0f172a;
+            --color-paper: #fffbeb;
         }
-
-        header h2 {
-        @apply px-[9%] md:px-[20%] text-3xl md:text-5xl text-center;
-        }
-
-        section {
-            @apply pt-8 px-[9%] pb-[42px] md:py-[3%] md:px-[20%] font-serif;
-        }
-
-        section h2 {
-            @apply mt-8 mb-2 text-2xl md:text-4xl font-bold tracking-tighter;
-        }
-
-        section p {
-            @apply mb-4 text-lg md:text-2xl leading-10;
-        }
-
+        body { @apply font-serif bg-white text-ink; }
+        header { @apply bg-ink text-white px-[9%] py-12 md:px-[20%]; }
+        header h1 { @apply mb-6 text-4xl md:text-6xl font-bold text-center tracking-tight leading-tight; }
+        header h2 { @apply text-xl md:text-2xl text-center italic; }
+        section { @apply px-[9%] py-8 md:px-[20%] md:py-12; }
+        section h2 { @apply mb-5 text-2xl md:text-3xl font-bold tracking-tight uppercase; }
+        section p { @apply mb-4 text-lg leading-8; }
+        section p:last-child { @apply mb-0; }
+        footer { @apply px-[9%] py-8 text-center bg-white text-ink; }
+        footer a { @apply text-purple-800 underline underline-offset-4 hover:text-purple-950 focus-visible:outline-2 focus-visible:outline-offset-4; }
     </style>
 </head>
 
@@ -38,58 +32,70 @@
 
     <!-- Hero block -->
     <header>
-        <h1>Big heading</h1>
-        <h2>Smaller sub-heading</h2>
+        <h1>Web Page with Sections</h1>
+        <h2>Exploring colour, contrast and typography</h2>
     </header>
 
     <!-- Main content of web page in sections -->
     <main>
-        <section>
-            <h2>Smaller Heading</h2>
+        <section class="bg-ink text-white">
+            <h2>Section 1</h2>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi
                 sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in
                 quisquam?</p>
-
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sapien at
+                lectus tincidunt feugiat. Donec posuere, erat vitae consequat ullamcorper,
+                ligula velit faucibus lorem, a fermentum neque justo sed nisl.</p>
         </section>
 
-        <section>
-            <h2>Smaller Heading</h2>
+        <section class="bg-paper text-ink">
+            <h2>Section 2</h2>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi
                 sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in
                 quisquam?</p>
-
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sapien at
+                lectus tincidunt feugiat. Donec posuere, erat vitae consequat ullamcorper,
+                ligula velit faucibus lorem, a fermentum neque justo sed nisl.</p>
         </section>
 
-        <section>
-            <h2>Smaller Heading</h2>
+        <section class="bg-sky-100 text-slate-900">
+            <h2>Section 3</h2>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi
                 sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in
                 quisquam?</p>
-
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sapien at
+                lectus tincidunt feugiat. Donec posuere, erat vitae consequat ullamcorper,
+                ligula velit faucibus lorem, a fermentum neque justo sed nisl.</p>
         </section>
 
-        <section>
-            <h2>Smaller Heading</h2>
+        <section class="bg-emerald-950 text-white">
+            <h2>Section 4</h2>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi
                 sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in
                 quisquam?</p>
-
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sapien at
+                lectus tincidunt feugiat. Donec posuere, erat vitae consequat ullamcorper,
+                ligula velit faucibus lorem, a fermentum neque justo sed nisl.</p>
         </section>
 
-        <section>
-            <h2>Smaller Heading</h2>
+        <section class="bg-violet-100 text-slate-900">
+            <h2>Section 5</h2>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi
                 sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in
                 quisquam?</p>
-
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sapien at
+                lectus tincidunt feugiat. Donec posuere, erat vitae consequat ullamcorper,
+                ligula velit faucibus lorem, a fermentum neque justo sed nisl.</p>
         </section>
 
-        <section>
-            <h2>Smaller Heading</h2>
+        <section class="bg-blue-950 text-white">
+            <h2>Section 6</h2>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi
                 sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in
                 quisquam?</p>
-            <p><a href="../index.html">Back to Home page</a></p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sapien at
+                lectus tincidunt feugiat. Donec posuere, erat vitae consequat ullamcorper,
+                ligula velit faucibus lorem, a fermentum neque justo sed nisl.</p>
         </section>
 
     </main>
@@ -97,7 +103,7 @@
 
     <!-- Links to related web pages, legal and copyright -->
 
-
+    <footer><a href="../index.html">Back to home page</a></footer>
 </body>
 
 </html>

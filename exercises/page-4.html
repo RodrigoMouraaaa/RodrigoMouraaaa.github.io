@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <!-- Rodrigo Moura 81200 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,52 +10,32 @@
     <meta name="description"
         content="The Dutch post-impressionist whose works are characterised by bold colours and dramatic, impulsive and expressive brushwork.">
 
-
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
-        header {
-        @apply flex flex-col justify-around items-center w-full mx-auto
-            bg-blue-800
-            px-12 lg:px-60 py-8 lg:py-14;
-  
-    }
-    header h1 {
-        @apply text-6xl md:text-8xl text-white tracking-tighter text-center
-            mb-8 lg:mb-12;
-    }
-
-    header h2 {
-        @apply text-2xl md:text-3xl/12 text-yellow-100 text-center;
-    }
-
-    section {
-        @apply bg-yellow-200
-            px-12 lg:px-60 
-            pt-4 pb-12 lg:pt-8 lg:pb-18;
-    }
-
-    section img {
-        @apply mb-5
-    }
-
-    section img {
-        @apply my-5 shadow-[8px_10px_8px_#888];
-    }
-
-    h3 { @apply text-3xl tracking-tight mt-10 lg:mt-12; }
-
-    p { @apply text-lg md:text-xl/8 mb-5; }
-
-    header *:last-child { @apply mb-0! }
-    
-    section *:last-child { @apply mb-0! }
-
+        body { @apply bg-yellow-100 text-slate-900 font-['Merriweather',serif]; }
+        header { @apply bg-blue-900 text-white px-6 py-10 md:px-[12%] lg:py-14 text-center; }
+        header h1 { @apply mx-auto mb-8 max-w-4xl text-4xl md:text-6xl font-bold tracking-tight leading-tight; }
+        header h2 { @apply mx-auto max-w-3xl text-lg md:text-xl text-yellow-100 leading-relaxed font-normal; }
+        nav { @apply mx-auto mt-8 max-w-3xl text-base leading-8; }
+        main section { @apply px-6 py-8 md:px-[12%] lg:py-12; }
+        section > * { @apply mx-auto max-w-3xl; }
+        section h3 { @apply mt-8 mb-5 text-2xl md:text-3xl font-bold tracking-tight; }
+        section p { @apply mb-5 text-base md:text-lg leading-8; }
+        section img { @apply my-7 block w-full h-auto rounded-lg shadow-lg; }
+        a { @apply underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4; }
+        section a { @apply text-blue-900 hover:text-purple-900; }
+        header a { @apply text-yellow-100 hover:text-white; }
+        html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     </style>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
 </head>
 
-
-<body>
+<body id="top-of-page">
 
     <header>
         <h1>Vincent van Gogh</h1>
@@ -63,13 +44,18 @@
             painter who created about 2,100 artworks. They include landscapes, still lifes, portraits and
             self-portraits, and are characterised by bold colours and dramatic, impulsive and expressive brushwork.</h2>
 
+        <nav aria-label="On this page">
+            <a href="#arles-years">The Arles Years</a> |
+            <a href="#later-years">Life, Suffering and Death</a> |
+            <a href="../index.html">Home</a>
+        </nav>
     </header>
 
     <main>
 
         <section>
 
-            <h3>The Arles Years</h3>
+            <h3 id="arles-years">The Arles Years</h3>
             <p>Van Gogh's two years at Arles in France (1888–89) were one of his most artistically productive periods.
                 He was enchanted by the local countryside and light; his works from this period are rich in yellow,
                 ultramarine and mauve. Among the most well-known works of that time is an oil painting of his rented
@@ -77,22 +63,20 @@
             <img src="assets/img/bedroom-arles-van-gogh.jpg" alt="Bedroom in Arles">
 
             <p><b>On view</b>: <a
-                href="https://www.vangoghmuseum.nl/en/collection/s0047V1962" target="_blank">Vincent van Gogh Museum, Amsterdam</a></p>   
-
+                href="https://www.vangoghmuseum.nl/en/collection/s0047V1962" target="_blank" rel="noopener noreferrer">Vincent van Gogh Museum, Amsterdam</a></p>
 
             <p>In Arles, the painter began a friendship with the owners of a local hotel, known as the Cafe de la Gare.
                 The building inspired two more famous creations. The first of which is known as <i>The Yellow House</i>.
             </p>
-            <img src="assets/img/yellow-house-van-gogh.jpg" alt="">
+            <img src="assets/img/yellow-house-van-gogh.jpg" alt="The Yellow House by Vincent van Gogh">
             <p>The second painting is one of many people's favourites: <i>The Cafe Terrace at Night</i>. The location at
                 the Place du Forum in Arles was refurbished to replicate van Gogh's painting.</p>
-            <img src="assets/img/cafe-terrace-at-night-van-gogh.jpg" alt="">
-            <h3>Life, Suffering and Death</h3>
+            <img src="assets/img/cafe-terrace-at-night-van-gogh.jpg" alt="Cafe Terrace at Night by Vincent van Gogh">
+            <h3 id="later-years">Life, Suffering and Death</h3>
 
             <p>After his time at Arles, van Gogh moved to a former monastery at nearby Saint-Remy. The building's garden
                 and surrounding countryside became the main subjects of his paintings. Some of his works from this time
                 are characterised by swirls, such as <i>The Starry Night</i>.</p>
-
 
             <img src="assets/img/starry-night-van-gogh.jpg" alt="Starry Night, van Gogh">
 
@@ -105,6 +89,8 @@
 
             <p><b>Source</b>: <i>All text and images from Wikipedia</i>.</p>
 
+            <p><a href="#top-of-page">Return to top of page</a></p>
+            <p><a href="page-5.html">Visit the Ireland attractions page</a> | <a href="../index.html">Back to home page</a></p>
         </section>
 
     </main>

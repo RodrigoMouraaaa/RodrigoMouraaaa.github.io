@@ -1,123 +1,37 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <!-- Rodrigo Moura 81200 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="google-site-verification" content="DPV2AYop92ciQ7-h1ur7ME0BAqJh2L4cmNj7G_zN9Nw">
 
+    <meta name="description" content="Rodrigo Moura's front-end development exercises and web design portfolio.">
     <title>Rodrigo Moura | Web/UI Designer</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="exercises/assets/img/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="exercises/assets/img/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="exercises/assets/img/favicons/favicon-16x16.png">
-    <link rel="manifest" href="exercises/assets/img/favicons/">
+    <link rel="apple-touch-icon" sizes="180x180" href="exercises/assets/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="exercises/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="exercises/assets/img/favicon-16x16.png">
+    <link rel="manifest" href="exercises/assets/img/site.webmanifest">
 
     <!-- Website Styles -->
     <style type="text/tailwindcss">
-
-        body {
-            @apply text-center bg-white text-black;
-            font-family: Arial, sans-serif;
-        }
-
-        main {
-            width: 90%;
-            max-width: 850px;
-            margin: 35px auto;
-            padding: 45px 35px;
-            background-color: white;
-        }
-
-        header {
-            @apply text-center;
-        }
-
-        header h1 {
-            @apply font-normal;
-            font-size: 48px;
-            line-height: 1.2;
-            margin-bottom: 15px;
-        }
-
-        header h2 {
-            @apply font-normal not-italic;
-            font-size: 28px;
-            margin-bottom: 30px;
-        }
-
-        header img {
-            width: 350px;
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto 35px;
-        }
-
-        section {
-            @apply text-center;
-        }
-
-        section h2 {
-            @apply font-bold uppercase;
-            font-size: 21px;
-            margin-top: 35px;
-            margin-bottom: 25px;
-        }
-
-        section p {
-            font-size: 17px;
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-
-        section a {
-            color: purple;
-            text-decoration: underline;
-            transition: color 0.2s ease;
-        }
-
-        section a:hover {
-            color: #5b21b6;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-
-            main {
-                width: 94%;
-                margin: 20px auto;
-                padding: 30px 18px;
-            }
-
-            header h1 {
-                font-size: 36px;
-            }
-
-            header h2 {
-                font-size: 22px;
-            }
-
-            header img {
-                width: 100%;
-                max-width: 300px;
-            }
-
-            section h2 {
-                font-size: 19px;
-            }
-
-            section p {
-                font-size: 16px;
-            }
-        }
-
+        body { @apply bg-slate-50 text-slate-800 font-sans; }
+        main { @apply mx-auto my-5 w-[94%] max-w-[850px] bg-white px-5 py-8 sm:my-9 sm:w-[90%] sm:px-9 sm:py-11; }
+        header, section { @apply text-center; }
+        header h1 { @apply mb-4 font-serif text-4xl sm:text-5xl font-normal leading-tight tracking-tight; }
+        header h2 { @apply mb-8 text-xl sm:text-2xl font-normal not-italic; }
+        header img { @apply mx-auto mb-9 block h-auto w-full max-w-[500px]; }
+        section h2 { @apply mt-9 mb-6 text-xl font-bold uppercase tracking-wide; }
+        section p { @apply mb-4 text-base sm:text-lg leading-relaxed; }
+        section a { @apply text-purple-800 underline underline-offset-4 hover:text-purple-950 focus-visible:outline-2 focus-visible:outline-offset-4; }
+        footer { @apply mt-10 text-center text-sm text-slate-600; }
     </style>
 
     <!-- Google Analytics -->
@@ -148,8 +62,8 @@
             <h2>Web / UI Designer</h2>
 
             <img
-                src="exercises/assets/img/dddd.jpg"
-                alt="Web design workspace"
+                src="exercises/assets/img/pexels-alicia-christin-gerald-1447380217-37880001.jpg"
+                alt="A developer working on HTML and CSS in a code editor on a laptop" width="1920" height="1280"
             >
 
         </header>
@@ -157,10 +71,13 @@
         <!-- Main Content -->
         <section>
 
-            <p>
-                Welcome to my personal webpage.
-                Here you can find information about my
-                interests, projects, and contact details.
+            <p class="text-left text-slate-600">
+                I'm Rodrigo Moura, a student exploring the creative and technical sides of
+                front-end development. This portfolio brings together my coursework in HTML
+                and TailwindCSS, from typography and colour to images and responsive layouts.
+                Through these exercises, I'm learning how to create clear, accessible web pages
+                and make thoughtful design choices that improve the way people read,
+                navigate and interact with content.
             </p>
 
             <h2>Sample Web Pages</h2>
@@ -204,12 +121,22 @@
             </p>
 
             <p>
+                <a href="exercises/hero-text.html">Hero block with text</a>
+            </p>
+
+            <p>
                 <a href="exercises/hero-image.html">
                     Hero block with background image
                 </a>
             </p>
 
+            <p>
+                <a href="exercises/hero-video.html">Hero block with background video</a>
+            </p>
+
         </section>
+
+        <footer><p>Rodrigo Moura | Student ID: 81200</p></footer>
 
     </main>
 
