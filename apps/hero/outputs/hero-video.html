@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Short, unique description of web page. Often used as the snippet shown in search results. About 120 characters is ideal.">
+<title>Hero Block</title>
+
+<link rel="preload" as="image" href="assets/videos/hero-poster.jpg">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<style type="text/tailwindcss">
+@source inline("bg-{slate,gray,zinc,neutral,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,100,200,300,400,500,600,700,800,900,950}");
+@source inline("bg-{black,white}");
+
+.hero {
+  @apply relative isolate flex items-center px-6 py-20 md:px-12 md:py-24;
+  overflow-wrap: anywhere;
+}
+.hero-poster-fallback, .hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hero-poster-fallback {
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.hero-video {
+  z-index: 1;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+}
+.hero-video.is-playing { opacity: 1; }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-color: var(--hero-overlay-colour, var(--color-black));
+  background-image: var(--hero-overlay-image, none);
+  opacity: var(--hero-overlay-opacity, .4);
+  pointer-events: none;
+}
+.hero-content {
+  @apply w-full max-w-6xl mx-auto;
+  position: relative;
+  z-index: 3;
+  min-width: 0;
+}
+.hero h1 {
+  @apply max-w-4xl text-4xl font-bold leading-tight tracking-tight;
+  @apply sm:text-5xl md:text-6xl lg:text-7xl text-shadow-lg/30;
+  color: var(--hero-heading-colour, var(--color-white));
+}
+.hero h2 {
+  @apply mt-6 max-w-3xl text-lg font-normal leading-relaxed;
+  @apply md:mt-8 md:text-2xl text-shadow-lg/30;
+  color: var(--hero-subheading-colour, var(--color-white));
+}
+.hero .hero-h1-sans, .hero .hero-h2-sans { @apply font-sans; }
+.hero .hero-h1-serif, .hero .hero-h2-serif { @apply font-serif; }
+.hero-centre { @apply text-center; }
+.hero-centre h1, .hero-centre h2 { @apply mx-auto; }
+.hero-min-height { @apply min-h-[480px] md:min-h-[85vh]; }
+.hero h2[hidden] { display: none; }
+</style>
+
+<style>
+.hero {
+  --hero-overlay-colour: var(--color-black);
+  --hero-overlay-image: linear-gradient(to right, var(--color-yellow-300), var(--color-red-800));
+  --hero-overlay-opacity: 0.35;
+  --hero-heading-colour: var(--color-red-700);
+  --hero-subheading-colour: var(--color-fuchsia-500);
+}
+</style>
+
+<style>
+.hero-poster-fallback {
+  background-image: url("assets/videos/hero-poster.jpg");
+}
+</style>
+
+<style>
+.hero #hero-heading {
+  letter-spacing: 0.060em;
+}
+.hero #hero-subheading {
+  letter-spacing: 0.100em;
+}
+</style>
+</head>
+<body>
+<header class="hero hero-centre hero-min-height">
+  <div class="hero-poster-fallback" aria-hidden="true"></div>
+
+  <video class="hero-video" muted loop playsinline
+    preload="metadata" poster="assets/videos/hero-poster.jpg"
+    aria-hidden="true" tabindex="-1">
+    <source src="assets/videos/hero-video.mp4" type="video/mp4">
+  </video>
+
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <h1 id="hero-heading" class="hero-h1-serif">Lorem ipsum dolor sit amet puxado</h1>
+      <h2 id="hero-subheading" class="hero-h2-serif">Consectetur adipiscing elit. Integer vitae libero ac risus egestas placerat.</h2>
+  </div>
+</header>
+
+<script>
+(function initialiseVideoPlayback(video) {
+  const motionPreference = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
+
+  function hideVideo() {
+    video.classList.remove("is-playing");
+  }
+
+  function attemptPlayback() {
+    if (motionPreference.matches) {
+      video.pause();
+      hideVideo();
+      return;
+    }
+
+    video.muted = true;
+
+    // A rejected autoplay attempt is handled once.
+    try {
+      const result = video.play();
+      if (result && typeof result.catch === "function") {
+        result.catch(() => {
+          hideVideo();
+        });
+      }
+    } catch (error) {
+      hideVideo();
+    }
+  }
+
+  video.addEventListener("playing", () => {
+    if (motionPreference.matches) {
+      video.pause();
+      hideVideo();
+    } else {
+      video.classList.add("is-playing");
+    }
+  });
+
+  video.addEventListener("pause", hideVideo);
+  video.addEventListener("error", hideVideo);
+
+  function handleMotionChange() {
+    if (motionPreference.matches) {
+      video.pause();
+      hideVideo();
+    } else {
+      attemptPlayback();
+    }
+  }
+
+  if (typeof motionPreference.addEventListener === "function") {
+    motionPreference.addEventListener("change", handleMotionChange);
+  } else if (typeof motionPreference.addListener === "function") {
+    motionPreference.addListener(handleMotionChange);
+  }
+
+  attemptPlayback();
+})(document.querySelector(".hero-video"));
+</script>
+</body>
+</html>

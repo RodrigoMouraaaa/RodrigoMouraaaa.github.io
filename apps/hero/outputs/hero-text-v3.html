@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Short, unique description of web page. Often used as the snippet shown in search results. About 120 characters is ideal.">
+  <title>Hero Block</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style type="text/tailwindcss">
+@source inline("bg-{slate,gray,zinc,neutral,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,100,200,300,400,500,600,700,800,900,950}");
+  @source inline("bg-{black,white}");
+
+  .hero {
+    @apply flex items-center px-6 py-20 md:px-12 md:py-24;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-content {
+    @apply w-full max-w-6xl mx-auto;
+    min-width: 0;
+  }
+
+  .hero h1 {
+    @apply max-w-4xl text-4xl font-bold leading-tight tracking-tight;
+    @apply sm:text-5xl md:text-6xl lg:text-7xl;
+  }
+
+  .hero h2 {
+    @apply mt-6 max-w-3xl text-lg font-normal leading-relaxed;
+    @apply md:mt-8 md:text-2xl;
+  }
+
+  .hero .hero-h1-sans,
+  .hero .hero-h2-sans {
+    @apply font-sans;
+  }
+
+  .hero .hero-h1-serif,
+  .hero .hero-h2-serif {
+    @apply font-serif;
+  }
+
+  .hero-light {
+    @apply bg-slate-50;
+  }
+
+  .hero-light h1 {
+    @apply text-slate-900;
+  }
+
+  .hero-light h2 {
+    @apply text-slate-700;
+  }
+
+  .hero-dark {
+    @apply bg-slate-900;
+  }
+
+  .hero-dark h1 {
+    @apply text-slate-50;
+  }
+
+  .hero-dark h2 {
+    @apply text-slate-300;
+  }
+
+  .hero-centre {
+    @apply text-center;
+  }
+
+  .hero-centre h1,
+  .hero-centre h2 {
+    @apply mx-auto;
+  }
+
+  .hero-min-height {
+    @apply min-h-[480px] md:min-h-[85vh];
+  }
+
+  .hero h2[hidden] {
+    display: none;
+  }
+
+  /*
+    Shared colour overrides.
+    The selected colours are assigned through
+    Tailwind palette variables in hero-colours.
+  */
+  .hero.hero-light,
+  .hero.hero-dark {
+    background-color: var(
+      --hero-background,
+      var(--color-slate-50)
+    );
+  }
+
+  .hero.hero-light h1,
+  .hero.hero-dark h1 {
+    color: var(
+      --hero-heading-colour,
+      var(--color-slate-900)
+    );
+  }
+
+  .hero.hero-light h2,
+  .hero.hero-dark h2 {
+    color: var(
+      --hero-subheading-colour,
+      var(--color-slate-700)
+    );
+  }
+  </style>
+
+  <style id="hero-colours">
+.hero {
+  --hero-background: var(--color-amber-600);
+  --hero-heading-colour: var(--color-red-800);
+  --hero-subheading-colour: var(--color-yellow-950);
+}
+  </style>
+
+  <style id="hero-letter-spacing">
+.hero #hero-heading {
+  letter-spacing: -0.050em;
+}
+
+.hero #hero-subheading {
+  letter-spacing: -0.025em;
+}
+  </style>
+</head>
+<body>
+  <header class="hero hero-light hero-centre">
+    <div class="hero-content">
+      <h1 id="hero-heading" class="hero-h1-sans">Lorem ipsum dolor sit amet</h1>
+      <h2 id="hero-subheading" class="hero-h2-sans">Consectetur adipiscing elit. Integer vitae libero ac risus egestas placerat.</h2>
+    </div>
+  </header>
+</body>
+</html>

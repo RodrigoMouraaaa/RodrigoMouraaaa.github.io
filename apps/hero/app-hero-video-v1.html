@@ -1,0 +1,1137 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Create and export a customisable video hero block.">
+<title>Hero Video Block Generator</title>
+
+<link rel="preload" as="image" href="outputs/assets/videos/hero-poster.jpg">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<style id="hero-styles" type="text/tailwindcss">
+@source inline("bg-{slate,gray,zinc,neutral,stone,red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{50,100,200,300,400,500,600,700,800,900,950}");
+@source inline("bg-{black,white}");
+
+.hero {
+  @apply relative isolate flex items-center px-6 py-20 md:px-12 md:py-24;
+  overflow-wrap: anywhere;
+}
+.hero-poster-fallback, .hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hero-poster-fallback {
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.hero-video {
+  z-index: 1;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+}
+.hero-video.is-playing { opacity: 1; }
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-color: var(--hero-overlay-colour, var(--color-black));
+  background-image: var(--hero-overlay-image, none);
+  opacity: var(--hero-overlay-opacity, .4);
+  pointer-events: none;
+}
+.hero-content {
+  @apply w-full max-w-6xl mx-auto;
+  position: relative;
+  z-index: 3;
+  min-width: 0;
+}
+.hero h1 {
+  @apply max-w-4xl text-4xl font-bold leading-tight tracking-tight;
+  @apply sm:text-5xl md:text-6xl lg:text-7xl text-shadow-lg/30;
+  color: var(--hero-heading-colour, var(--color-white));
+}
+.hero h2 {
+  @apply mt-6 max-w-3xl text-lg font-normal leading-relaxed;
+  @apply md:mt-8 md:text-2xl text-shadow-lg/30;
+  color: var(--hero-subheading-colour, var(--color-white));
+}
+.hero .hero-h1-sans, .hero .hero-h2-sans { @apply font-sans; }
+.hero .hero-h1-serif, .hero .hero-h2-serif { @apply font-serif; }
+.hero-centre { @apply text-center; }
+.hero-centre h1, .hero-centre h2 { @apply mx-auto; }
+.hero-min-height { @apply min-h-[480px] md:min-h-[85vh]; }
+.hero h2[hidden] { display: none; }
+</style>
+
+<style id="hero-colours">
+.hero {
+  --hero-overlay-colour: var(--color-black);
+  --hero-overlay-image: none;
+  --hero-overlay-opacity: .4;
+  --hero-heading-colour: var(--color-white);
+  --hero-subheading-colour: var(--color-white);
+}
+</style>
+
+<style id="hero-poster-path">
+.hero-poster-fallback {
+  background-image: url("outputs/assets/videos/hero-poster.jpg");
+}
+</style>
+
+<style id="hero-letter-spacing">
+.hero #hero-heading { letter-spacing: -.05em; }
+.hero #hero-subheading { letter-spacing: -.025em; }
+</style>
+
+<style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: Arial, Helvetica, sans-serif;
+}
+button, select, input { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .4; }
+button:focus-visible, input:focus-visible,
+select:focus-visible, [contenteditable]:focus-visible,
+.palette-scroll:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+[hidden] { display: none !important; }
+.app-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px 20px 120px;
+}
+.app-top { padding: 15px 0 24px; }
+.app-top h1 { margin: 0 0 8px; font-size: 28px; }
+.app-top p { margin: 0; color: #64748b; }
+.app-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0;
+}
+.app-nav a {
+  padding: 10px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  background: white;
+  color: #334155;
+  text-decoration: none;
+  font-size: 14px;
+}
+.app-nav a:hover { background: #e2e8f0; }
+.panel {
+  margin-bottom: 20px;
+  padding: 22px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+.panel h2 { margin: 0 0 18px; font-size: 18px; }
+.panel h3 { margin: 20px 0 12px; font-size: 15px; }
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 25px;
+}
+.control-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.control-checkbox { width: 17px; height: 17px; accent-color: #1d4ed8; }
+.control-group { margin-top: 20px; }
+.control-group label { font-size: 14px; }
+.range-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.range-row input { width: 180px; accent-color: #1d4ed8; }
+.range-row output {
+  min-width: 65px;
+  font: 12px monospace;
+}
+select {
+  padding: 9px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+}
+.palette-targets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.palette-target {
+  padding: 9px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+  font-size: 13px;
+}
+.palette-target[aria-pressed="true"] {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: white;
+}
+.palette-selection { font-size: 13px; color: #475569; }
+.palette-scroll {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 15px;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+.palette-table {
+  border-spacing: 6px;
+  width: max-content;
+}
+.palette-table th {
+  padding: 4px;
+  color: #64748b;
+  font-size: 11px;
+}
+.palette-table th[scope="row"] {
+  text-align: left;
+  min-width: 85px;
+}
+.swatch {
+  position: relative;
+  display: block;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  border: 1px solid #94a3b8;
+  border-radius: 6px;
+}
+.swatch[aria-pressed="true"] {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+.swatch[aria-pressed="true"]::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 20px;
+  text-shadow: 0 1px 3px black, 0 0 3px black;
+}
+.special-colours {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 18px;
+}
+.special-colours label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.effects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.effects fieldset {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+.effects legend { font-weight: bold; font-size: 14px; }
+.effects fieldset:disabled { opacity: .45; }
+.preview-frame {
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+.preview-frame [contenteditable="true"] { cursor: text; }
+.preview-frame [contenteditable="true"]:focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 6px;
+}
+.help { font-size: 13px; color: #64748b; }
+.copy-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 20;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 10px;
+  background: #1d4ed8;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 5px 20px #0002;
+}
+.copy-button:hover { background: #1e40af; }
+.copy-status { margin: 15px 0; font-size: 14px; }
+.fallback-panel {
+  padding: 16px;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 10px;
+}
+.fallback-panel textarea {
+  width: 100%;
+  min-height: 260px;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: 12px monospace;
+}
+@media(max-width: 600px) {
+  .panel { padding: 16px; }
+  .app-container { padding-left: 12px; padding-right: 12px; }
+  .copy-button { right: 12px; bottom: 12px; }
+}
+</style>
+</head>
+
+<body>
+<main class="app-container">
+
+<section class="app-top">
+  <h1>Hero Video Block Generator</h1>
+  <p>Customise your video hero and copy the generated HTML.</p>
+</section>
+
+<nav class="app-nav" aria-label="Generator sections">
+  <a href="#settings">Settings</a>
+  <a href="#colours">Colours</a>
+  <a href="#typography">Typography</a>
+  <a href="#preview">Preview</a>
+</nav>
+
+<section class="panel" id="settings">
+  <h2>General settings</h2>
+
+  <div class="controls-row">
+    <label class="control-label">
+      <input id="centre-checkbox" class="control-checkbox" type="checkbox">
+      Centre text
+    </label>
+
+    <label class="control-label">
+      <input id="height-checkbox" class="control-checkbox" type="checkbox" checked>
+      Minimum height
+    </label>
+
+    <label class="control-label">
+      <input id="subheading-checkbox" class="control-checkbox" type="checkbox" checked>
+      Show subheading
+    </label>
+
+    <label class="control-label">
+      <input id="gradient-checkbox" class="control-checkbox" type="checkbox">
+      Gradient overlay
+    </label>
+  </div>
+
+  <div class="control-group">
+    <div class="range-row">
+      <label for="overlay-opacity">Overlay opacity</label>
+      <input id="overlay-opacity" type="range" min="0.1" max="0.9"
+        step="0.05" value="0.4" aria-describedby="overlay-opacity-value">
+      <output id="overlay-opacity-value" for="overlay-opacity">0.40</output>
+    </div>
+  </div>
+
+  <div class="control-group" id="gradient-direction-control" hidden>
+    <label for="gradient-direction">Gradient direction</label>
+    <select id="gradient-direction">
+      <option value="to right">Left to right</option>
+      <option value="to left">Right to left</option>
+      <option value="to bottom">Top to bottom</option>
+      <option value="to top">Bottom to top</option>
+    </select>
+  </div>
+</section>
+
+<section class="panel" id="colours">
+  <h2>Tailwind colour palette</h2>
+
+  <div class="palette-targets" role="group" aria-label="Colour target">
+    <button type="button" class="palette-target"
+      data-target="overlay" aria-pressed="true">Overlay colour</button>
+    <button type="button" class="palette-target"
+      data-target="gradientStart" aria-pressed="false" hidden>Start colour</button>
+    <button type="button" class="palette-target"
+      data-target="gradientEnd" aria-pressed="false" hidden>End colour</button>
+    <button type="button" class="palette-target"
+      data-target="h1" aria-pressed="false">H1</button>
+    <button type="button" class="palette-target"
+      data-target="h2" aria-pressed="false">H2</button>
+  </div>
+
+  <p id="palette-selection" class="palette-selection"
+    role="status" aria-live="polite">Overlay colour: black</p>
+
+  <div class="palette-scroll" tabindex="0" role="region"
+    aria-label="Scrollable Tailwind colour palette">
+    <table class="palette-table" aria-label="Tailwind colours">
+      <thead>
+        <tr id="palette-headings"><th scope="col">Family</th></tr>
+      </thead>
+      <tbody id="palette-body"></tbody>
+    </table>
+  </div>
+
+  <div class="special-colours">
+    <label>
+      <button type="button" class="swatch bg-black"
+        data-colour="black" aria-label="Black" aria-pressed="false"></button>
+      Black
+    </label>
+    <label>
+      <button type="button" class="swatch bg-white"
+        data-colour="white" aria-label="White" aria-pressed="false"></button>
+      White
+    </label>
+  </div>
+
+  <p class="help">Select a target and then choose its colour.</p>
+</section>
+
+<section class="panel" id="typography">
+  <h2>Typography</h2>
+  <div class="effects">
+    <fieldset id="h1-effects">
+      <legend>H1 text effects</legend>
+      <label class="control-label">
+        <input id="h1-serif-checkbox" type="checkbox" class="control-checkbox">
+        Serif font
+      </label>
+      <div class="range-row">
+        <label for="h1-letter-spacing">Letter spacing</label>
+        <input id="h1-letter-spacing" type="range"
+          min="-0.05" max="0.10" step="0.005" value="-0.05">
+        <output id="h1-letter-spacing-value">-0.050em</output>
+      </div>
+    </fieldset>
+
+    <fieldset id="h2-effects">
+      <legend>H2 text effects</legend>
+      <label class="control-label">
+        <input id="h2-serif-checkbox" type="checkbox" class="control-checkbox">
+        Serif font
+      </label>
+      <div class="range-row">
+        <label for="h2-letter-spacing">Letter spacing</label>
+        <input id="h2-letter-spacing" type="range"
+          min="-0.05" max="0.10" step="0.005" value="-0.025">
+        <output id="h2-letter-spacing-value">-0.025em</output>
+      </div>
+    </fieldset>
+  </div>
+</section>
+
+<section class="panel" id="preview">
+  <h2>Live preview</h2>
+  <div class="preview-frame">
+    <header id="hero-preview" class="hero hero-min-height">
+
+      <div class="hero-poster-fallback" aria-hidden="true"></div>
+
+      <video id="hero-video" class="hero-video"
+        muted loop playsinline preload="metadata"
+        poster="outputs/assets/videos/hero-poster.jpg"
+        aria-hidden="true" tabindex="-1">
+        <source src="outputs/assets/videos/hero-video.mp4" type="video/mp4">
+      </video>
+
+      <div class="hero-overlay" aria-hidden="true"></div>
+
+      <div class="hero-content">
+        <h1 id="hero-heading" class="hero-h1-sans"
+          contenteditable="true" role="textbox"
+          aria-label="Edit main heading" aria-multiline="false"
+          spellcheck="true">Lorem ipsum dolor sit amet</h1>
+
+        <h2 id="hero-subheading" class="hero-h2-sans"
+          contenteditable="true" role="textbox"
+          aria-label="Edit subheading" aria-multiline="false"
+          spellcheck="true">Consectetur adipiscing elit. Integer vitae libero ac risus egestas placerat.</h2>
+      </div>
+
+    </header>
+  </div>
+
+  <p class="help">Click a heading to edit its text directly.</p>
+  <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+
+  <div id="fallback-panel" class="fallback-panel" hidden>
+    <label for="fallback-html">Generated HTML for manual copying</label>
+    <textarea id="fallback-html" rows="12" readonly spellcheck="false"></textarea>
+    <p class="help">Select and copy the HTML above.</p>
+  </div>
+</section>
+
+</main>
+
+<button id="copy-button" class="copy-button" type="button">Copy HTML</button>
+
+<script>
+"use strict";
+
+/* =====================================
+   1. ELEMENTS AND PATHS
+===================================== */
+
+const $ = id => document.getElementById(id);
+
+const heroPreview = $("hero-preview");
+const heroVideo = $("hero-video");
+const heroHeading = $("hero-heading");
+const heroSubheading = $("hero-subheading");
+
+const centreCheckbox = $("centre-checkbox");
+const heightCheckbox = $("height-checkbox");
+const subheadingCheckbox = $("subheading-checkbox");
+const gradientCheckbox = $("gradient-checkbox");
+const gradientDirection = $("gradient-direction");
+const gradientDirectionControl = $("gradient-direction-control");
+
+const overlayOpacitySlider = $("overlay-opacity");
+const overlayOpacityValue = $("overlay-opacity-value");
+
+const h1SerifCheckbox = $("h1-serif-checkbox");
+const h2SerifCheckbox = $("h2-serif-checkbox");
+const h1LetterSpacingSlider = $("h1-letter-spacing");
+const h2LetterSpacingSlider = $("h2-letter-spacing");
+const h1LetterSpacingValue = $("h1-letter-spacing-value");
+const h2LetterSpacingValue = $("h2-letter-spacing-value");
+
+const h2Effects = $("h2-effects");
+const heroColours = $("hero-colours");
+const heroLetterSpacing = $("hero-letter-spacing");
+const heroStyles = $("hero-styles").textContent;
+
+const paletteHeadings = $("palette-headings");
+const paletteBody = $("palette-body");
+const paletteSelection = $("palette-selection");
+const paletteTargets = [...document.querySelectorAll(".palette-target")];
+
+const copyButton = $("copy-button");
+const copyStatus = $("copy-status");
+const fallbackPanel = $("fallback-panel");
+const fallbackTextarea = $("fallback-html");
+
+const exportedVideoPath = "assets/videos/hero-video.mp4";
+const exportedPosterPath = "assets/videos/hero-poster.jpg";
+
+/* =====================================
+   2. SETTINGS AND COLOURS
+===================================== */
+
+const colourFamilies = [
+  "slate","gray","zinc","neutral","stone",
+  "red","orange","amber","yellow","lime",
+  "green","emerald","teal","cyan","sky",
+  "blue","indigo","violet","purple",
+  "fuchsia","pink","rose"
+];
+
+const colourShades = [
+  50,100,200,300,400,500,600,700,800,900,950
+];
+
+const validColours = new Set([
+  ...colourFamilies.flatMap(f =>
+    colourShades.map(s => `${f}-${s}`)
+  ),
+  "black","white"
+]);
+
+const colourKeys = {
+  overlay: "overlayColour",
+  gradientStart: "gradientStartColour",
+  gradientEnd: "gradientEndColour",
+  h1: "h1Colour",
+  h2: "h2Colour"
+};
+
+const colourLabels = {
+  overlay: "Overlay colour",
+  gradientStart: "Start colour",
+  gradientEnd: "End colour",
+  h1: "H1",
+  h2: "H2"
+};
+
+const validGradientDirections = new Set([
+  "to right","to left","to bottom","to top"
+]);
+
+let activeTarget = "overlay";
+
+const settings = {
+  centre: false,
+  minimumHeight: true,
+  showSubheading: true,
+  h1Serif: false,
+  h2Serif: false,
+  h1LetterSpacing: -0.05,
+  h2LetterSpacing: -0.025,
+  overlayColour: "black",
+  overlayOpacity: 0.4,
+  h1Colour: "white",
+  h2Colour: "white",
+  gradientEnabled: false,
+  gradientInitialised: false,
+  gradientStartColour: "black",
+  gradientEndColour: "blue-500",
+  gradientDirection: "to right"
+};
+
+function readSettings() {
+  settings.centre = centreCheckbox.checked;
+  settings.minimumHeight = heightCheckbox.checked;
+  settings.showSubheading = subheadingCheckbox.checked;
+  settings.gradientEnabled = gradientCheckbox.checked;
+
+  if (validGradientDirections.has(gradientDirection.value)) {
+    settings.gradientDirection = gradientDirection.value;
+  }
+
+  const opacity = Number(overlayOpacitySlider.value);
+  if (Number.isFinite(opacity) && opacity >= .1 && opacity <= .9) {
+    settings.overlayOpacity = opacity;
+  }
+
+  settings.h1Serif = h1SerifCheckbox.checked;
+  settings.h2Serif = h2SerifCheckbox.checked;
+  settings.h1LetterSpacing = Number(h1LetterSpacingSlider.value);
+  settings.h2LetterSpacing = Number(h2LetterSpacingSlider.value);
+}
+
+function colourVariable(colour) {
+  if (!validColours.has(colour)) {
+    throw new Error("Invalid Tailwind colour");
+  }
+  return `var(--color-${colour})`;
+}
+
+function getColourCss() {
+  const overlay = colourVariable(settings.overlayColour);
+  const h1 = colourVariable(settings.h1Colour);
+  const h2 = colourVariable(settings.h2Colour);
+
+  let gradient = "none";
+
+  if (settings.gradientEnabled) {
+    gradient = `linear-gradient(${settings.gradientDirection}, ` +
+      `${colourVariable(settings.gradientStartColour)}, ` +
+      `${colourVariable(settings.gradientEndColour)})`;
+  }
+
+  return `.hero {
+  --hero-overlay-colour: ${overlay};
+  --hero-overlay-image: ${gradient};
+  --hero-overlay-opacity: ${settings.overlayOpacity.toFixed(2)};
+  --hero-heading-colour: ${h1};
+  --hero-subheading-colour: ${h2};
+}`;
+}
+
+/* =====================================
+   3. COLOUR PALETTE
+===================================== */
+
+function buildPalette() {
+  colourShades.forEach(shade => {
+    const th = document.createElement("th");
+    th.scope = "col";
+    th.textContent = shade;
+    paletteHeadings.appendChild(th);
+  });
+
+  colourFamilies.forEach(family => {
+    const row = document.createElement("tr");
+    const th = document.createElement("th");
+    th.scope = "row";
+    th.textContent = family[0].toUpperCase() + family.slice(1);
+    row.appendChild(th);
+
+    colourShades.forEach(shade => {
+      const colour = `${family}-${shade}`;
+      const td = document.createElement("td");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `swatch bg-${colour}`;
+      button.dataset.colour = colour;
+      button.title = colour;
+      button.setAttribute("aria-label", `${family} ${shade}`);
+      button.setAttribute("aria-pressed", "false");
+      td.appendChild(button);
+      row.appendChild(td);
+    });
+
+    paletteBody.appendChild(row);
+  });
+}
+
+function getDefaultColourTarget() {
+  return settings.gradientEnabled ? "gradientStart" : "overlay";
+}
+
+function isColourTargetAvailable(target) {
+  if (!Object.prototype.hasOwnProperty.call(colourKeys, target)) {
+    return false;
+  }
+  if (target === "h2" && !settings.showSubheading) return false;
+  if (target === "overlay") return !settings.gradientEnabled;
+  if (target === "gradientStart" || target === "gradientEnd") {
+    return settings.gradientEnabled;
+  }
+  return true;
+}
+
+function updatePalette() {
+  if (!isColourTargetAvailable(activeTarget)) {
+    activeTarget = getDefaultColourTarget();
+  }
+
+  gradientDirectionControl.hidden = !settings.gradientEnabled;
+  gradientDirection.disabled = !settings.gradientEnabled;
+
+  paletteTargets.forEach(button => {
+    const target = button.dataset.target;
+    const available = isColourTargetAvailable(target);
+    const hiddenByMode =
+      target === "overlay" ||
+      target === "gradientStart" ||
+      target === "gradientEnd";
+
+    button.hidden = hiddenByMode && !available;
+    button.disabled = !available;
+    button.setAttribute("aria-pressed", String(target === activeTarget));
+  });
+
+  const selected = settings[colourKeys[activeTarget]];
+  paletteSelection.textContent = `${colourLabels[activeTarget]}: ${selected}`;
+
+  document.querySelectorAll(".swatch").forEach(button => {
+    button.setAttribute(
+      "aria-pressed",
+      String(button.dataset.colour === selected)
+    );
+  });
+}
+
+function selectColourTarget(target) {
+  if (!isColourTargetAvailable(target)) return;
+  activeTarget = target;
+  updatePalette();
+}
+
+function selectColour(colour) {
+  if (!validColours.has(colour)) return;
+  if (!isColourTargetAvailable(activeTarget)) {
+    activeTarget = getDefaultColourTarget();
+  }
+
+  settings[colourKeys[activeTarget]] = colour;
+  updatePreview();
+  updateFallback();
+}
+
+/* =====================================
+   4. SETTINGS AND TYPOGRAPHY
+===================================== */
+
+function handleGradientChange() {
+  const wasEnabled = settings.gradientEnabled;
+  readSettings();
+
+  if (settings.gradientEnabled &&
+      !wasEnabled &&
+      !settings.gradientInitialised) {
+    settings.gradientStartColour = settings.overlayColour;
+    settings.gradientEndColour = "blue-500";
+    settings.gradientDirection = "to right";
+    gradientDirection.value = "to right";
+    settings.gradientInitialised = true;
+  }
+
+  updatePreview();
+  updateFallback();
+}
+
+function formatLetterSpacing(value) {
+  const number = Math.abs(value) < .0005 ? 0 : value;
+  return number.toFixed(3) + "em";
+}
+
+function getLetterSpacingCss() {
+  return `.hero #hero-heading {
+  letter-spacing: ${formatLetterSpacing(settings.h1LetterSpacing)};
+}
+.hero #hero-subheading {
+  letter-spacing: ${formatLetterSpacing(settings.h2LetterSpacing)};
+}`;
+}
+
+function getHeroClasses() {
+  const classes = ["hero"];
+  if (settings.centre) classes.push("hero-centre");
+  if (settings.minimumHeight) classes.push("hero-min-height");
+  return classes.join(" ");
+}
+
+function getHeadingClasses(level) {
+  if (level === "h1") {
+    return settings.h1Serif ? "hero-h1-serif" : "hero-h1-sans";
+  }
+  return settings.h2Serif ? "hero-h2-serif" : "hero-h2-sans";
+}
+
+function updatePreview() {
+  // Only update classes and CSS.
+  // The video element is never recreated.
+  heroPreview.className = getHeroClasses();
+  heroHeading.className = getHeadingClasses("h1");
+  heroSubheading.className = getHeadingClasses("h2");
+
+  heroSubheading.hidden = !settings.showSubheading;
+  h2Effects.disabled = !settings.showSubheading;
+
+  h1LetterSpacingValue.textContent =
+    formatLetterSpacing(settings.h1LetterSpacing);
+  h2LetterSpacingValue.textContent =
+    formatLetterSpacing(settings.h2LetterSpacing);
+  overlayOpacityValue.textContent =
+    settings.overlayOpacity.toFixed(2);
+
+  heroLetterSpacing.textContent = getLetterSpacingCss();
+  heroColours.textContent = getColourCss();
+
+  updatePalette();
+}
+
+/* =====================================
+   5. VIDEO PLAYBACK
+===================================== */
+
+function initialiseVideoPlayback(video) {
+  const motionPreference = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
+
+  function hideVideo() {
+    video.classList.remove("is-playing");
+  }
+
+  function attemptPlayback() {
+    if (motionPreference.matches) {
+      video.pause();
+      hideVideo();
+      return;
+    }
+
+    video.muted = true;
+
+    // A rejected autoplay attempt is handled once.
+    try {
+      const result = video.play();
+      if (result && typeof result.catch === "function") {
+        result.catch(() => {
+          hideVideo();
+        });
+      }
+    } catch (error) {
+      hideVideo();
+    }
+  }
+
+  video.addEventListener("playing", () => {
+    if (motionPreference.matches) {
+      video.pause();
+      hideVideo();
+    } else {
+      video.classList.add("is-playing");
+    }
+  });
+
+  video.addEventListener("pause", hideVideo);
+  video.addEventListener("error", hideVideo);
+
+  function handleMotionChange() {
+    if (motionPreference.matches) {
+      video.pause();
+      hideVideo();
+    } else {
+      attemptPlayback();
+    }
+  }
+
+  if (typeof motionPreference.addEventListener === "function") {
+    motionPreference.addEventListener("change", handleMotionChange);
+  } else if (typeof motionPreference.addListener === "function") {
+    motionPreference.addListener(handleMotionChange);
+  }
+
+  attemptPlayback();
+}
+
+/* =====================================
+   6. TEXT EDITING
+===================================== */
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function insertPlainText(text) {
+  const selection = window.getSelection();
+  if (!selection || !selection.rangeCount) return;
+
+  const active = document.activeElement;
+  if (active !== heroHeading && active !== heroSubheading) return;
+
+  const range = selection.getRangeAt(0);
+  if (!active.contains(range.commonAncestorContainer)) return;
+
+  range.deleteContents();
+  const node = document.createTextNode(
+    text.replace(/[\r\n]+/g, " ")
+  );
+  range.insertNode(node);
+  range.setStartAfter(node);
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
+  active.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+function handlePlainTextPaste(event) {
+  event.preventDefault();
+  insertPlainText(event.clipboardData?.getData("text/plain") || "");
+}
+
+function preventNewLines(event) {
+  if (event.key === "Enter") event.preventDefault();
+}
+
+function normaliseHeading(element) {
+  if (document.activeElement === element) return;
+  const text = element.textContent;
+  if (element.childNodes.length !== 1 ||
+      element.firstChild.nodeType !== Node.TEXT_NODE) {
+    element.textContent = text;
+  }
+}
+
+/* =====================================
+   7. EXPORTED HTML
+===================================== */
+
+function getExportedPosterCss() {
+  return `.hero-poster-fallback {
+  background-image: url("${exportedPosterPath}");
+}`;
+}
+
+function getExportedPlaybackScript() {
+  // Extract the same named function used by the preview.
+  // Escape script closing tags before inserting in HTML.
+  return `(${initialiseVideoPlayback.toString()})(document.querySelector(".hero-video"));`;
+}
+
+function generateHtml() {
+  const headingText = escapeHtml(heroHeading.textContent);
+  const subheadingText = escapeHtml(heroSubheading.textContent);
+
+  const h2Html = settings.showSubheading
+    ? `\n      <h2 id="hero-subheading" class="${getHeadingClasses("h2")}">${subheadingText}</h2>`
+    : "";
+
+  const tailwindScript =
+    '<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"><\/script>';
+
+  const playbackScript = getExportedPlaybackScript();
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Short, unique description of web page. Often used as the snippet shown in search results. About 120 characters is ideal.">
+<title>Hero Block</title>
+
+<link rel="preload" as="image" href="${exportedPosterPath}">
+${tailwindScript}
+
+<style type="text/tailwindcss">
+${heroStyles.trim()}
+</style>
+
+<style>
+${getColourCss()}
+</style>
+
+<style>
+${getExportedPosterCss()}
+</style>
+
+<style>
+${getLetterSpacingCss()}
+</style>
+</head>
+<body>
+<header class="${getHeroClasses()}">
+  <div class="hero-poster-fallback" aria-hidden="true"></div>
+
+  <video class="hero-video" muted loop playsinline
+    preload="metadata" poster="${exportedPosterPath}"
+    aria-hidden="true" tabindex="-1">
+    <source src="${exportedVideoPath}" type="video/mp4">
+  </video>
+
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <h1 id="hero-heading" class="${getHeadingClasses("h1")}">${headingText}</h1>${h2Html}
+  </div>
+</header>
+
+<script>
+${playbackScript}
+<\/script>
+</body>
+</html>`;
+}
+
+/* =====================================
+   8. COPY HTML
+===================================== */
+
+function updateFallback() {
+  if (!fallbackPanel.hidden) {
+    fallbackTextarea.value = generateHtml();
+  }
+}
+
+function handleSettingsChange() {
+  readSettings();
+  updatePreview();
+  updateFallback();
+}
+
+function showManualCopy(html) {
+  fallbackTextarea.value = html;
+  fallbackPanel.hidden = false;
+  copyStatus.textContent =
+    "Automatic copying is unavailable. Use the manual-copy box.";
+}
+
+async function copyHtml() {
+  const html = generateHtml();
+  copyStatus.textContent = "";
+
+  try {
+    if (!navigator.clipboard?.writeText) {
+      throw new Error("Clipboard API unavailable");
+    }
+    await navigator.clipboard.writeText(html);
+    copyStatus.textContent = "HTML copied successfully.";
+  } catch (error) {
+    showManualCopy(html);
+  }
+}
+
+/* =====================================
+   9. EVENT LISTENERS
+===================================== */
+
+gradientCheckbox.addEventListener("change", handleGradientChange);
+
+gradientDirection.addEventListener("change", handleSettingsChange);
+overlayOpacitySlider.addEventListener("input", handleSettingsChange);
+
+[
+  centreCheckbox,
+  heightCheckbox,
+  subheadingCheckbox,
+  h1SerifCheckbox,
+  h2SerifCheckbox
+].forEach(input => {
+  input.addEventListener("change", handleSettingsChange);
+});
+
+[
+  h1LetterSpacingSlider,
+  h2LetterSpacingSlider
+].forEach(input => {
+  input.addEventListener("input", handleSettingsChange);
+});
+
+paletteTargets.forEach(button => {
+  button.addEventListener("click", () => {
+    selectColourTarget(button.dataset.target);
+  });
+});
+
+document.querySelectorAll(".palette-scroll, .special-colours")
+  .forEach(container => {
+    container.addEventListener("click", event => {
+      const button = event.target.closest(".swatch[data-colour]");
+      if (!button || !container.contains(button)) return;
+      selectColour(button.dataset.colour);
+    });
+  });
+
+[heroHeading, heroSubheading].forEach(heading => {
+  heading.addEventListener("paste", handlePlainTextPaste);
+  heading.addEventListener("keydown", preventNewLines);
+  heading.addEventListener("input", updateFallback);
+  heading.addEventListener("blur", () => {
+    normaliseHeading(heading);
+    updateFallback();
+  });
+});
+
+copyButton.addEventListener("click", copyHtml);
+
+/* =====================================
+   10. INITIALISATION
+===================================== */
+
+buildPalette();
+readSettings();
+updatePreview();
+initialiseVideoPlayback(heroVideo);
+
+</script>
+</body>
+</html>
